@@ -6,8 +6,6 @@ import styles from './burguerIngredient.module.css'
 const BurguerIngredient = ({ type }) => {
   let ingredient = null
 
-  console.log(type)
-
   switch (type) {
     case ('bread-top'):
       ingredient = (
@@ -36,8 +34,6 @@ const BurguerIngredient = ({ type }) => {
     default:
       ingredient = null;
   }
-
-  console.log(ingredient)
 
   return ingredient
 }
