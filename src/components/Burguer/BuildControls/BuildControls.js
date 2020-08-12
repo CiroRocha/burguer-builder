@@ -4,7 +4,7 @@ import styles from './BuildControls.module.css'
 
 import BuildControl from './BuildControl/BuildControl'
 
-const BuildControls = ({ ingredientAdded, ingredientRemoved, disabled }) => {
+const BuildControls = ({ ingredientAdded, ingredientRemoved, price, purchasable, disabled, reviewOrder }) => {
 
   const controls = [
     { label: 'Salad', type: 'salad' },
@@ -15,6 +15,7 @@ const BuildControls = ({ ingredientAdded, ingredientRemoved, disabled }) => {
 
   return (
     <div className={ styles.BuildControls } >
+      <p>Burguer price: <b>{ price.toFixed(2) }</b></p>
       {controls.map(control => {
         return <BuildControl
                   labelText={ control.label }
@@ -24,6 +25,10 @@ const BuildControls = ({ ingredientAdded, ingredientRemoved, disabled }) => {
                   disabledButton={ disabled[control.type] }
                 />
       })}
+      <button
+        className={ styles.OrderButton } disabled={ !purchasable }
+        onClick={ () => reviewOrder() }
+      >Order now</button>
     </div>
   )
 }
