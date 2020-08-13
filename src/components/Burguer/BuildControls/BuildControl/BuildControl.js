@@ -3,7 +3,6 @@ import React from 'react'
 import styles from './buildControl.module.css'
 
 const BuildControl = ({ labelText, added, removed, disabledButton }) => {
-  console.log(disabledButton)
   return (
     <div className={ styles.BuildControl } >
       <div className={ styles.Label } >{ labelText }</div>

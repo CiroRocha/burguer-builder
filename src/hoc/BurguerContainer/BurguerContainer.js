@@ -61,7 +61,6 @@ const BurguerContainer = () => {
     alert('Order placed')
   }
 
-  console.log('rerender');
   const disabledInfo = { ...ingredients }
   for (let key in disabledInfo) {
     disabledInfo[key] = disabledInfo[key] <= 0
