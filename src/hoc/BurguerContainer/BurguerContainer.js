@@ -1,6 +1,8 @@
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 
 import axios from '../../components/axios-orders'
+
+import useErrorHandler from '../../hoc/useErrorHandler/useErrorHandler'
 
 import Burguer from '../../components/Burguer/Burguer'
 import BuildControls from '../../components/Burguer/BuildControls/BuildControls'
@@ -17,12 +19,14 @@ const INGREDIENT_PRICES = {
 
 const BurguerContainer = () => {
 
-  const [ ingredients, setIngredients ] = useState({
-    salad: 0,
-    cheese: 0,
-    meat: 0,
-    bacon: 0,
-  })
+  const [ ingredients, setIngredients ] = useState(null)
+  const [ errorScreen, setErrorScreen ] = useState(false)
+
+  useEffect(() => {
+    axios.get('https://burguer-app-ciro-rocha.firebaseio.com/ingredients.json')
+      .then(response =>  setIngredients(response.data))
+      .catch(error => setErrorScreen(true))
+  }, [])
 
   const [ totalPrice, setTotalPrice ] = useState(4)
   const [ purchasable, setPurchasable ] = useState(false)
@@ -91,26 +95,38 @@ const BurguerContainer = () => {
     disabledInfo[key] = disabledInfo[key] <= 0
   }
 
+  let orderSummary = null
+  let burgerControls = errorScreen ? <p>Ingredients can't be loaded :(</p> : <Spinner />
+
+  if( ingredients ) {
+    orderSummary = <OrderSummary ingredients={ ingredients } confirmOrder={ () => purchaseConfirmation() } cancelOrder={ () => setReviewOrder(false) } totalPrice={ totalPrice } />
+    burgerControls = (
+      <>
+        <Burguer ingredients={ ingredients } />
+        <BuildControls
+          ingredientAdded={ addIngredientHandler }
+          ingredientRemoved={ removeIngredientHandler }
+          price={ totalPrice }
+          purchasable={ purchasable }
+          disabled={ disabledInfo }
+          reviewOrder={ () => setReviewOrder(true) }
+        />
+      </>
+    )
+  }
+
+  if ( loading ) {
+    orderSummary = <Spinner />
+  }
+
   return (
     <>
       <Modal show={ reviewOrder } modalClosed={ () => setReviewOrder(false) } >
-        { loading ?
-            <Spinner />
-          :
-            <OrderSummary ingredients={ ingredients } confirmOrder={ () => purchaseConfirmation() } cancelOrder={ () => setReviewOrder(false) } totalPrice={ totalPrice } />
-        }
+        { orderSummary }
       </Modal>
-      <Burguer ingredients={ ingredients } />
-      <BuildControls
-        ingredientAdded={ addIngredientHandler }
-        ingredientRemoved={ removeIngredientHandler }
-        price={ totalPrice }
-        purchasable={ purchasable }
-        disabled={ disabledInfo }
-        reviewOrder={ () => setReviewOrder(true) }
-      />
+      { burgerControls }
     </>
   )
 }
 
-export default BurguerContainer
+export default useErrorHandler(BurguerContainer, axios)

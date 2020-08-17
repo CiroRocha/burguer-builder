@@ -1,3 +1,7 @@
 .MainStyling {
   margin-top: 72px;
 }
+
+body {
+  margin: 0;
+}

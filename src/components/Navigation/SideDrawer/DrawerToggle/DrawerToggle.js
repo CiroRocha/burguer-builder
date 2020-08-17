@@ -4,7 +4,7 @@ import styles from './drawerToggle.module.css'
 
 const DrawerToggle = ({ clicked }) => {
   return (
-    <div onClick={ () => clicked() } className={ styles.DrawerToggle } >
+    <div role='button' aria-label='Display menu' onClick={ () => clicked() } onKeyDown={ () => clicked() } tabIndex={0} className={ styles.DrawerToggle } >
       <div />
       <div />
       <div />
