@@ -1,9 +1,12 @@
 import React, { useState } from 'react'
 
+import axios from '../../components/axios-orders'
+
 import Burguer from '../../components/Burguer/Burguer'
 import BuildControls from '../../components/Burguer/BuildControls/BuildControls'
 import Modal from '../../components/UI/Modal/Modal'
 import OrderSummary from '../../components/Burguer/OrderSummary/OrderSummary'
+import Spinner from '../../components/UI/Spinner/Spinner'
 
 const INGREDIENT_PRICES = {
   salad: 0.5,
@@ -24,6 +27,7 @@ const BurguerContainer = () => {
   const [ totalPrice, setTotalPrice ] = useState(4)
   const [ purchasable, setPurchasable ] = useState(false)
   const [ reviewOrder, setReviewOrder ] = useState(false)
+  const [ loading, setLoading ] = useState(false)
 
   const updatePurchasableState = (updatedIngredients) => {
     const allIngredients = updatedIngredients
@@ -58,7 +62,28 @@ const BurguerContainer = () => {
   }
 
   const purchaseConfirmation = () => {
-    alert('Order placed')
+    setLoading(true)
+    axios.post('/orders-placed.json', {
+      ingredients: ingredients,
+      price: totalPrice.toFixed(2), // this would not happen in production, price should ALWAYS be calculated away from user side code
+      costumer: {
+        name: 'Joe Costumer',
+        contact: 'joe@mailservice.com',
+        deliveryMethod: 'PickUp',
+        address: {
+          street: "Joe's street",
+          zipCode: '12.345-67',
+          number: '13'
+        }
+      }
+    }).then(response => {
+        setLoading(false)
+        setReviewOrder(false)
+      })
+      .catch(error => {
+        setLoading(false)
+        setReviewOrder(false)
+      })
   }
 
   const disabledInfo = { ...ingredients }
@@ -69,7 +94,11 @@ const BurguerContainer = () => {
   return (
     <>
       <Modal show={ reviewOrder } modalClosed={ () => setReviewOrder(false) } >
-        <OrderSummary ingredients={ ingredients } confirmOrder={ () => purchaseConfirmation() } cancelOrder={ () => setReviewOrder(false) } totalPrice={ totalPrice } />
+        { loading ?
+            <Spinner />
+          :
+            <OrderSummary ingredients={ ingredients } confirmOrder={ () => purchaseConfirmation() } cancelOrder={ () => setReviewOrder(false) } totalPrice={ totalPrice } />
+        }
       </Modal>
       <Burguer ingredients={ ingredients } />
       <BuildControls
