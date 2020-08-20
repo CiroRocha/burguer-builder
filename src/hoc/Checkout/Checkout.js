@@ -9,9 +9,9 @@ const Checkout = () => {
   const location = useLocation()
 
   const [ ingredients, setIngredients ] = useState({
-    salad: 1,
+    salad: 0,
     meat: 0,
-    cheese: 1,
+    cheese: 0,
     bacon: 0,
   })
 
@@ -45,7 +45,7 @@ const Checkout = () => {
     <div>
       <CheckoutSummary ingredients={ ingredients } checkoutCancel={ CheckoutCancelHandler } checkoutContinue= { CheckoutContinueHandler } />
       <Router>
-        <ContactData path={ 'checkout/contact-data' } ingredients={ ingredients } />
+        <ContactData path={ 'checkout/contact-data' } ingredients={ ingredients } price={ price } />
       </Router>
     </div>
   )
