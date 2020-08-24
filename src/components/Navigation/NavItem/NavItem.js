@@ -7,8 +7,8 @@ import Link from './Link/Link'
 const NavItem = () => {
   return (
     <ul className={ styles.NavItems } >
-      <Link link='/' active >Burguer Builder</Link>
-      <Link link='/'  >Checkout</Link>
+      <Link link='/' >Burguer Builder</Link>
+      <Link link='/orders'  >Orders</Link>
     </ul>
   )
 }

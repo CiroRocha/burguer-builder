@@ -45,7 +45,7 @@ const Checkout = () => {
     <div>
       <CheckoutSummary ingredients={ ingredients } checkoutCancel={ CheckoutCancelHandler } checkoutContinue= { CheckoutContinueHandler } />
       <Router>
-        <ContactData path={ 'checkout/contact-data' } ingredients={ ingredients } price={ price } />
+        <ContactData path={ 'checkout/contact-data' } ingredients={ ingredients } totalPrice={ price } />
       </Router>
     </div>
   )
