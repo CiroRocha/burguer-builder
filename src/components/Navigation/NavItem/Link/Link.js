@@ -1,15 +1,16 @@
 import React from 'react'
+import { Link } from 'gatsby'
 
 import styles from './link.module.css'
 
-const Link = ({ link, active, children }) => {
+const NavLink = ({ link, children }) => {
   return (
     <li className={ styles.NavItem } >
-      <a href={ link } className={ active ? styles.active : null } >
+      <Link to={ link } activeClassName={ styles.active } >
         { children }
-      </a>
+      </Link>
     </li>
   )
 }
 
-export default Link
+export default NavLink

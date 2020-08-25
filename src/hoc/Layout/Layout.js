@@ -1,4 +1,5 @@
 import React, { useState } from 'react'
+// import { BrowserRouter } from 'react-router-dom'
 
 import styles from './layout.module.css'
 
@@ -10,6 +11,8 @@ const Layout = ({ children }) => {
   const [ showSideDrawer, setShowSideDrawer ] = useState(false)
 
   return (
+    // This is where routing main component would be if routing was not managed by Gatsby
+    // <BrowserRouter>
     <>
       <Toolbar DrawerToggleFunction={ () => setShowSideDrawer(!showSideDrawer) } />
       <SideDrawer showMe={ showSideDrawer } closed={ () => setShowSideDrawer(false) } />
@@ -17,6 +20,7 @@ const Layout = ({ children }) => {
         { children }
       </main>
     </>
+    // </BrowserRouter>
   )
 }
 

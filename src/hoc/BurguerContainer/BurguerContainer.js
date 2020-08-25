@@ -1,4 +1,6 @@
 import React, { useState, useEffect } from 'react'
+// import { useHistory } from 'react-router-dom'
+import { navigate } from '@reach/router'
 
 import axios from '../../components/axios-orders'
 
@@ -18,6 +20,9 @@ const INGREDIENT_PRICES = {
 }
 
 const BurguerContainer = () => {
+
+  // This would be used if react router was in control of routing
+  // let history = useHistory()
 
   const [ ingredients, setIngredients ] = useState(null)
   const [ errorScreen, setErrorScreen ] = useState(false)
@@ -66,28 +71,17 @@ const BurguerContainer = () => {
   }
 
   const purchaseConfirmation = () => {
-    setLoading(true)
-    axios.post('/orders-placed.json', {
-      ingredients: ingredients,
-      price: totalPrice.toFixed(2), // this would not happen in production, price should ALWAYS be calculated away from user side code
-      costumer: {
-        name: 'Joe Costumer',
-        contact: 'joe@mailservice.com',
-        deliveryMethod: 'PickUp',
-        address: {
-          street: "Joe's street",
-          zipCode: '12.345-67',
-          number: '13'
-        }
-      }
-    }).then(response => {
-        setLoading(false)
-        setReviewOrder(false)
-      })
-      .catch(error => {
-        setLoading(false)
-        setReviewOrder(false)
-      })
+
+    let queryString = ''
+
+    queryString = Object.entries(ingredients).map( ingredient => {
+      return queryString.concat(ingredient[0], '=', ingredient[1].toString())
+    })
+
+    queryString = queryString.join('&')
+    queryString += `&price=${totalPrice.toFixed(2)}`
+
+    navigate(`/checkout?${queryString}`);
   }
 
   const disabledInfo = { ...ingredients }
