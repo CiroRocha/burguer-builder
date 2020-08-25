@@ -18,7 +18,6 @@ const Checkout = () => {
   const [ price, setPrice ] = useState(0)
 
   useEffect(() => {
-    console.log(location);
     const query = new URLSearchParams(location.search)
     const queryIngredients = {}
 
