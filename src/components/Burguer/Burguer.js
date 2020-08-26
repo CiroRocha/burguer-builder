@@ -1,15 +1,19 @@
 import React from 'react'
 
+import { useSelector } from 'react-redux'
+
 import styles from './burguer.module.css'
 
 import BurguerIngredient from './BurguerIngredient/BurguerIngredient'
 
-const Burguer = ({ ingredients }) => {
+const Burguer = () => {
 
-  let mountedIngredients = Object.keys(ingredients)
+  const ing = useSelector( state => state.ingredients )
+
+  let mountedIngredients = Object.keys(ing)
     .map(ingredient => {
       return(
-        [...Array(ingredients[ingredient])].map((_, index) => {    // Array(x) creates an empty array with length 'x'; ingredients[ingredient] means the value paired with key 'ingredient' on object 'ingredients'
+        [...Array(ing[ingredient])].map((_, index) => {    // Array(x) creates an empty array with length 'x'; ingredients[ingredient] means the value paired with key 'ingredient' on object 'ingredients'
             return <BurguerIngredient key={ ingredient + index } type={ ingredient } />
           }
         )

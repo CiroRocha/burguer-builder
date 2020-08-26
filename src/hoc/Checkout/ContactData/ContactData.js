@@ -2,17 +2,22 @@ import React, { useState, useEffect } from 'react'
 import { navigate } from '@reach/router'
 import axios from '../../../components/axios-orders'
 
+import { useSelector } from 'react-redux'
+
 import styles from './contactData.module.css'
 
 import Button from '../../../components/UI/Button/Button'
 import Input from '../../../components/UI/Input/Input'
 import Spinner from '../../../components/UI/Spinner/Spinner'
 
-const ContactData = ({ ingredients, totalPrice }) => {
+const ContactData = () => {
 
   const [ displayForm, setDisplayForm ] = useState(null)
 
   const [ loading, setLoading ] = useState(false)
+
+  const ing = useSelector( state => state.ingredients )
+  const totalPrice = useSelector( state => state.totalPrice )
 
   const [ fieldsData, setFieldsData ] = useState({
     name: {
@@ -140,7 +145,7 @@ const ContactData = ({ ingredients, totalPrice }) => {
     }
 
     axios.post('/orders-placed.json', {
-      ingredients: ingredients,
+      ingredients: ing,
       price: totalPrice, // this would not happen in production, price should ALWAYS be calculated away from user side code
       costumerData: formValues
     }).then(response => {

@@ -43,24 +43,6 @@ const BurguerContainer = () => {
   }, ing)
 
 
-  // Send user to checkout page
-  const purchaseConfirmation = () => {
-
-    // Unecessary query way of passing data, leaving it here in case it has some use in the future
-    // let queryString = ''
-
-    // queryString = Object.entries(ing).map( ingredient => {
-    //   return queryString.concat(ingredient[0], '=', ingredient[1].toString())
-    // })
-
-    // queryString = queryString.join('&')
-    // queryString += `&price=${totalPrice.toFixed(2)}`
-
-    // navigate(`/checkout?${queryString}`);
-    navigate('/checkout')
-  }
-
-
   // Checks if there is more than 1 of each ingredient
   // The ones who don't get a disabled remove ingredient button
   const disabledInfo = { ...ing }
@@ -74,10 +56,10 @@ const BurguerContainer = () => {
   let burgerControls = errorScreen ? <p>Ingredients can't be loaded :(</p> : <Spinner />
 
   if( ing ) {
-    orderSummary = <OrderSummary ingredients={ ing } confirmOrder={ () => purchaseConfirmation() } cancelOrder={ () => setReviewOrder(false) } totalPrice={ totalPrice } />
+    orderSummary = <OrderSummary ingredients={ ing } confirmOrder={ () => navigate('/checkout') } cancelOrder={ () => setReviewOrder(false) } totalPrice={ totalPrice } />
     burgerControls = (
       <>
-        <Burguer ingredients={ ing } />
+        <Burguer />
         <BuildControls
           price={ totalPrice }
           purchasable={ purchasable }
