@@ -2,12 +2,19 @@ import * as burgerActions from '../actions'
 
 const initialState ={
   ingredients: {
-    salad: 1,
+    salad: 0,
     bacon: 0,
-    meat: 1,
     cheese: 0,
+    meat: 0,
   },
   totalPrice: 4
+}
+
+const INGREDIENT_PRICES = {
+  salad: 0.5,
+  bacon: 0.7,
+  cheese: 0.4,
+  meat: 1.3,
 }
 
 const reducer = ( state = initialState, action ) => {
@@ -18,20 +25,24 @@ const reducer = ( state = initialState, action ) => {
         ingredients: {
           ...state.ingredients,
           [ action.ingredientName ]: state.ingredients[ action.ingredientName ] + 1
-        }
+        },
+        totalPrice: state.totalPrice + INGREDIENT_PRICES[ action.ingredientName ],
       }
 
     case burgerActions.REMOVE_INGREDIENT:
       let newValue = 0
-      if ( state.ingredients[ action.ingredientName ] - 1 > 0 ) {
+      let newPrice = state.totalPrice
+      if ( state.ingredients[ action.ingredientName ] - 1 >= 0 ) {
         newValue = state.ingredients[ action.ingredientName ] - 1
+        newPrice = newPrice - INGREDIENT_PRICES[ action.ingredientName ]
       }
       return {
         ...state,
         ingredients: {
           ...state.ingredients,
           [ action.ingredientName ]: newValue
-        }
+        },
+        totalPrice: newPrice,
       }
 
     default: return state

@@ -1,9 +1,7 @@
 import React, { useState, useEffect } from 'react'
 import { navigate } from '@reach/router'
 
-import { connect } from 'redux'
 import { useSelector } from 'react-redux'
-import * as reduxActions from '../../store/actions'
 
 import axios from '../../components/axios-orders'
 
@@ -15,13 +13,6 @@ import Modal from '../../components/UI/Modal/Modal'
 import OrderSummary from '../../components/Burguer/OrderSummary/OrderSummary'
 import Spinner from '../../components/UI/Spinner/Spinner'
 
-const INGREDIENT_PRICES = {
-  salad: 0.5,
-  cheese: 0.4,
-  meat: 1.3,
-  bacon: 0.7,
-}
-
 const BurguerContainer = () => {
 
   const ing = useSelector( state => state.ingredients )
@@ -32,9 +23,10 @@ const BurguerContainer = () => {
   const [ reviewOrder, setReviewOrder ] = useState(false)
   const [ loading, setLoading ] = useState(false)
 
-  // BuildControls button disable/enable
+  // BuildControls order button disable/enable
   // Managed here and passed as prop so that Redux isn't necessary at BuildControls component
   const [ purchasable, setPurchasable ] = useState(false)
+
   useEffect(() => {
     const allIngredients = ing
 
@@ -50,20 +42,24 @@ const BurguerContainer = () => {
 
   }, ing)
 
+
   // Send user to checkout page
   const purchaseConfirmation = () => {
 
-    let queryString = ''
+    // Unecessary query way of passing data, leaving it here in case it has some use in the future
+    // let queryString = ''
 
-    queryString = Object.entries(ing).map( ingredient => {
-      return queryString.concat(ingredient[0], '=', ingredient[1].toString())
-    })
+    // queryString = Object.entries(ing).map( ingredient => {
+    //   return queryString.concat(ingredient[0], '=', ingredient[1].toString())
+    // })
 
-    queryString = queryString.join('&')
-    queryString += `&price=${totalPrice.toFixed(2)}`
+    // queryString = queryString.join('&')
+    // queryString += `&price=${totalPrice.toFixed(2)}`
 
-    navigate(`/checkout?${queryString}`);
+    // navigate(`/checkout?${queryString}`);
+    navigate('/checkout')
   }
+
 
   // Checks if there is more than 1 of each ingredient
   // The ones who don't get a disabled remove ingredient button
@@ -71,6 +67,7 @@ const BurguerContainer = () => {
   for (let key in disabledInfo) {
     disabledInfo[key] = disabledInfo[key] <= 0
   }
+
 
   // Manages loading and error state while fetching from server
   let orderSummary = null

@@ -1,50 +1,21 @@
-import React, { useState, useEffect } from 'react'
-import { navigate, useLocation, Router } from '@reach/router'
+import React from 'react'
+import { Router } from '@reach/router'
+
+import { useSelector } from 'react-redux'
 
 import CheckoutSummary from '../../components/Order/CheckoutSummary/CheckoutSummary'
 import ContactData from './ContactData/ContactData'
 
 const Checkout = () => {
 
-  const location = useLocation()
-
-  const [ ingredients, setIngredients ] = useState({
-    salad: 0,
-    meat: 0,
-    cheese: 0,
-    bacon: 0,
-  })
-
-  const [ price, setPrice ] = useState(0)
-
-  useEffect(() => {
-    const query = new URLSearchParams(location.search)
-    const queryIngredients = {}
-
-    for(let param of query.entries()) {
-      if (param[0] === 'price') {
-        setPrice(param[1])
-      } else {
-        queryIngredients[param[0]] = +param[1]
-      }
-    }
-
-    setIngredients(queryIngredients)
-  }, [])
-
-  const CheckoutCancelHandler = () => {
-    navigate(-1)
-  }
-
-  const CheckoutContinueHandler = () => {
-    navigate('/checkout/contact-data')
-  }
+  const ing = useSelector( state => state.ingredients )
+  const totalPrice = useSelector( state => state.totalPrice )
 
   return (
     <div>
-      <CheckoutSummary ingredients={ ingredients } checkoutCancel={ CheckoutCancelHandler } checkoutContinue= { CheckoutContinueHandler } />
+      <CheckoutSummary ingredients={ ing } />
       <Router>
-        <ContactData path={ 'checkout/contact-data' } ingredients={ ingredients } totalPrice={ price } />
+        <ContactData path={ 'checkout/contact-data' } ingredients={ ing } totalPrice={ totalPrice } />
       </Router>
     </div>
   )
