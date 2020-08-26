@@ -1,10 +1,15 @@
 import React from 'react'
 
+import { useDispatch } from 'react-redux'
+import * as reduxActions from '../../../store/actions'
+
 import styles from './BuildControls.module.css'
 
 import BuildControl from './BuildControl/BuildControl'
 
-const BuildControls = ({ ingredientAdded, ingredientRemoved, price, purchasable, disabled, reviewOrder }) => {
+const BuildControls = ({ price, purchasable, disabled, reviewOrder }) => {
+
+  const dispatch = useDispatch()
 
   const controls = [
     { label: 'Salad', type: 'salad' },
@@ -20,8 +25,8 @@ const BuildControls = ({ ingredientAdded, ingredientRemoved, price, purchasable,
         return <BuildControl
                   labelText={ control.label }
                   key={ control.label }
-                  added={ () => ingredientAdded(control.type) }
-                  removed={ () => ingredientRemoved(control.type) }
+                  added={ () => dispatch({ type: reduxActions.ADD_INGREDIENT, ingredientName: control.type }) }
+                  removed={ () => dispatch({ type: reduxActions.REMOVE_INGREDIENT, ingredientName: control.type }) }
                   disabledButton={ disabled[control.type] }
                 />
       })}

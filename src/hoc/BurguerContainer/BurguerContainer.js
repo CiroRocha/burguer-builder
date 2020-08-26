@@ -1,6 +1,9 @@
 import React, { useState, useEffect } from 'react'
-// import { useHistory } from 'react-router-dom'
 import { navigate } from '@reach/router'
+
+import { connect } from 'redux'
+import { useSelector } from 'react-redux'
+import * as reduxActions from '../../store/actions'
 
 import axios from '../../components/axios-orders'
 
@@ -21,25 +24,19 @@ const INGREDIENT_PRICES = {
 
 const BurguerContainer = () => {
 
-  // This would be used if react router was in control of routing
-  // let history = useHistory()
+  const ing = useSelector( state => state.ingredients )
+  const totalPrice = useSelector( state => state.totalPrice )
 
-  const [ ingredients, setIngredients ] = useState(null)
   const [ errorScreen, setErrorScreen ] = useState(false)
 
-  useEffect(() => {
-    axios.get('https://burguer-app-ciro-rocha.firebaseio.com/ingredients.json')
-      .then(response =>  setIngredients(response.data))
-      .catch(error => setErrorScreen(true))
-  }, [])
-
-  const [ totalPrice, setTotalPrice ] = useState(4)
-  const [ purchasable, setPurchasable ] = useState(false)
   const [ reviewOrder, setReviewOrder ] = useState(false)
   const [ loading, setLoading ] = useState(false)
 
-  const updatePurchasableState = (updatedIngredients) => {
-    const allIngredients = updatedIngredients
+  // BuildControls button disable/enable
+  // Managed here and passed as prop so that Redux isn't necessary at BuildControls component
+  const [ purchasable, setPurchasable ] = useState(false)
+  useEffect(() => {
+    const allIngredients = ing
 
     const sum = Object.keys( allIngredients )
       .map(igKey => {
@@ -50,31 +47,15 @@ const BurguerContainer = () => {
       }, 0)
 
     setPurchasable(sum > 0)
-  }
 
-  const addIngredientHandler = ( type ) => {
-    const updatedIngredients = { ...ingredients }
-    updatedIngredients[type] = ingredients[type] + 1
-    setIngredients( updatedIngredients )
-    setTotalPrice( totalPrice + INGREDIENT_PRICES[type] )
-    updatePurchasableState(updatedIngredients)
-  }
+  }, ing)
 
-  const removeIngredientHandler = ( type ) => {
-    const updatedIngredients = { ...ingredients }
-    if (updatedIngredients[type] - 1 >= 0) {
-      updatedIngredients[type] = ingredients[type] - 1
-      setIngredients( updatedIngredients )
-      setTotalPrice( totalPrice - INGREDIENT_PRICES[type] )
-    }
-    updatePurchasableState(updatedIngredients)
-  }
-
+  // Send user to checkout page
   const purchaseConfirmation = () => {
 
     let queryString = ''
 
-    queryString = Object.entries(ingredients).map( ingredient => {
+    queryString = Object.entries(ing).map( ingredient => {
       return queryString.concat(ingredient[0], '=', ingredient[1].toString())
     })
 
@@ -84,22 +65,23 @@ const BurguerContainer = () => {
     navigate(`/checkout?${queryString}`);
   }
 
-  const disabledInfo = { ...ingredients }
+  // Checks if there is more than 1 of each ingredient
+  // The ones who don't get a disabled remove ingredient button
+  const disabledInfo = { ...ing }
   for (let key in disabledInfo) {
     disabledInfo[key] = disabledInfo[key] <= 0
   }
 
+  // Manages loading and error state while fetching from server
   let orderSummary = null
   let burgerControls = errorScreen ? <p>Ingredients can't be loaded :(</p> : <Spinner />
 
-  if( ingredients ) {
-    orderSummary = <OrderSummary ingredients={ ingredients } confirmOrder={ () => purchaseConfirmation() } cancelOrder={ () => setReviewOrder(false) } totalPrice={ totalPrice } />
+  if( ing ) {
+    orderSummary = <OrderSummary ingredients={ ing } confirmOrder={ () => purchaseConfirmation() } cancelOrder={ () => setReviewOrder(false) } totalPrice={ totalPrice } />
     burgerControls = (
       <>
-        <Burguer ingredients={ ingredients } />
+        <Burguer ingredients={ ing } />
         <BuildControls
-          ingredientAdded={ addIngredientHandler }
-          ingredientRemoved={ removeIngredientHandler }
           price={ totalPrice }
           purchasable={ purchasable }
           disabled={ disabledInfo }
