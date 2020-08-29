@@ -17,7 +17,7 @@ const BurguerContainer = () => {
 
   const ing = useSelector( state => state.burger.ingredients )
   const totalPrice = useSelector( state => state.burger.totalPrice )
-  const errFetchIngredients = useSelector( state => state.error )
+  const errFetchIngredients = useSelector( state => state.burger.error )
 
   const dispatch = useDispatch()
 
