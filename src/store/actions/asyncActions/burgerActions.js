@@ -1,6 +1,5 @@
 import * as actionTypes from '../actionTypes'
 
-import { useDispatch } from 'react-redux'
 import axios from '../../../components/axios-orders'
 
 export const initIngredients = () => {

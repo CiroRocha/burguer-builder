@@ -1,6 +1,6 @@
 import React from 'react'
 
-import { useDispatch } from 'react-redux'
+import { useDispatch, useSelector } from 'react-redux'
 import * as actionTypes from '../../../store/actions/actionTypes'
 
 import styles from './buildControls.module.css'
@@ -11,12 +11,11 @@ const BuildControls = ({ price, purchasable, disabled, reviewOrder }) => {
 
   const dispatch = useDispatch()
 
-  const controls = [
-    { label: 'Salad', type: 'salad' },
-    { label: 'Bacon', type: 'bacon' },
-    { label: 'Cheese', type: 'cheese' },
-    { label: 'Meat', type: 'meat' },
-  ]
+  const ing = useSelector( state => state.burger.ingredients )
+
+  const controls = Object.keys(ing).map(ingredientName => {
+    return { label: ingredientName, type: ingredientName }
+  })
 
   return (
     <div className={ styles.BuildControls } >
