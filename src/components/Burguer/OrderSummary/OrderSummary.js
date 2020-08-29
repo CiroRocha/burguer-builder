@@ -1,12 +1,18 @@
 import React from 'react'
+import { navigate } from '@reach/router'
+
+import { useSelector } from 'react-redux'
 
 import Button from '../../UI/Button/Button'
 
-const OrderSummary = ({ ingredients, confirmOrder, cancelOrder, totalPrice }) => {
+const OrderSummary = ({ cancelOrder }) => {
 
-  const ingredientSummary = Object.keys(ingredients)
+  const ing = useSelector( state => state.burger.ingredients )
+  const totalPrice = useSelector( state => state.burger.totalPrice )
+
+  const ingredientSummary = Object.keys(ing)
     .map((igKey, index) => {
-      return <li style={{ textTransform: 'capitalize' }} key={ index } >{ igKey }: { ingredients[igKey] }</li>
+      return <li style={{ textTransform: 'capitalize' }} key={ index } >{ igKey }: { ing[igKey] }</li>
     })
 
   return (
@@ -19,7 +25,7 @@ const OrderSummary = ({ ingredients, confirmOrder, cancelOrder, totalPrice }) =>
       <p>Total price: <b>{ totalPrice.toFixed(2) }</b></p>
       <p>Proceed to checkout?</p>
       <Button buttonType='Danger' clicked={ () => cancelOrder() } >No</Button>
-      <Button buttonType='Success' clicked={ () => confirmOrder() } >Yes</Button>
+      <Button buttonType='Success' clicked={ () => navigate('/checkout') } >Yes</Button>
     </>
   )
 }

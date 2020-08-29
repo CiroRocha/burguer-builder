@@ -16,8 +16,8 @@ const ContactData = () => {
 
   const [ loading, setLoading ] = useState(false)
 
-  const ing = useSelector( state => state.ingredients )
-  const totalPrice = useSelector( state => state.totalPrice )
+  const ing = useSelector( state => state.burger.ingredients )
+  const totalPrice = useSelector( state => state.burger.totalPrice )
 
   const [ fieldsData, setFieldsData ] = useState({
     name: {

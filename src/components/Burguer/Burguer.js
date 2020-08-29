@@ -8,7 +8,7 @@ import BurguerIngredient from './BurguerIngredient/BurguerIngredient'
 
 const Burguer = () => {
 
-  const ing = useSelector( state => state.ingredients )
+  const ing = useSelector( state => state.burger.ingredients )
 
   let mountedIngredients = Object.keys(ing)
     .map(ingredient => {
