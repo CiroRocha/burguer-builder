@@ -1,9 +1,6 @@
 import React, { useState, useEffect } from 'react'
 
-import { useLocation } from "@reach/router"
-
-import { useDispatch, useSelector } from 'react-redux'
-import * as burgerActions from '../../store/actions/asyncActions/burgerActions'
+import { useSelector } from 'react-redux'
 
 import axios from '../../components/axios-orders'
 
@@ -21,17 +18,11 @@ const BurguerContainer = () => {
   const totalPrice = useSelector( state => state.burger.totalPrice )
   const errFetchIngredients = useSelector( state => state.burger.error )
 
-  const dispatch = useDispatch()
-
   const [ reviewOrder, setReviewOrder ] = useState(false)
 
   // BuildControls order button disable/enable
   // Managed here and passed as prop so that Redux isn't necessary at BuildControls component
   const [ purchasable, setPurchasable ] = useState(false)
-
-  useEffect(() => {
-    dispatch( burgerActions.initIngredients() )
-  }, [])
 
   // Checks if burger is purchasable based on the amount of ingredients picked
   useEffect (() => {
@@ -64,7 +55,6 @@ const BurguerContainer = () => {
     orderSummary = <OrderSummary cancelOrder={ () => setReviewOrder(false) } />
     burgerControls = (
       <>
-        <Burguer />
         <BuildControls
           price={ totalPrice }
           purchasable={ purchasable }
@@ -80,6 +70,7 @@ const BurguerContainer = () => {
       <Modal show={ reviewOrder } modalClosed={ () => setReviewOrder(false) } >
         { orderSummary }
       </Modal>
+      <Burguer />
       { burgerControls }
     </>
   )

@@ -1,9 +1,9 @@
-import React, { useState, useEffect } from 'react'
+import React, { useEffect } from 'react'
 
-import { useLocation } from "@reach/router"
+import { useLocation } from '@reach/router'
 
 import { useSelector, useDispatch } from 'react-redux'
-import * as actionTypes from '../../store/actions/actionTypes'
+import * as burgerActions from '../../store/actions/asyncActions/burgerActions'
 
 import styles from './burguer.module.css'
 
@@ -14,17 +14,11 @@ const Burguer = () => {
   const ing = useSelector( state => state.burger.ingredients )
 
   const dispatch = useDispatch()
+  const location = useLocation()
+  console.log(location);
 
-  const currentLocation = useLocation()
   useEffect(() => {
-    if( !ing ) {
-      const onCartBurguer = JSON.parse(localStorage.getItem('onCartBurger'))
-      if ( onCartBurguer ) {
-        console.log('dispatched local storage');
-        dispatch({ type: actionTypes.SET_INGREDIENTS, ingredients: onCartBurguer })
-        console.log(ing);
-      }
-    }
+    dispatch( burgerActions.initIngredients() )
   }, [])
 
   let mountedIngredients = []

@@ -33,6 +33,7 @@ const BuildControls = ({ price, purchasable, disabled, reviewOrder }) => {
         className={ styles.OrderButton } disabled={ !purchasable }
         onClick={ () => reviewOrder() }
       >Order now</button>
+      <button onClick={ () => dispatch({ type: actionTypes.CLEAR_INGREDIENTS }) } style={{ marginTop: '1rem', marginBottom: '3rem', backgroundColor: 'transparent', border: '0' }} >Clear basket</button>
     </div>
   )
 }

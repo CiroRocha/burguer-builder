@@ -18,6 +18,7 @@ const OrderSummary = ({ cancelOrder }) => {
   const goToCheckout = () => {
     console.log(ing);
     localStorage.setItem( 'onCartBurger', JSON.stringify(ing) )
+    localStorage.setItem( 'onCartBurgerPrice', totalPrice.toFixed(2) )
     console.log(localStorage);
     navigate('/checkout')
   }

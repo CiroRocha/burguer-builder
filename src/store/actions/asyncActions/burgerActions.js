@@ -2,13 +2,15 @@ import * as actionTypes from '../actionTypes'
 
 import axios from '../../../components/axios-orders'
 
-export const initIngredients = ( forceIngredients ) => {
+export const initIngredients = () => {
   return dispatch => {
 
-    console.log(forceIngredients);
-    if( forceIngredients ) {
+    const onCartBurger = JSON.parse(localStorage.getItem('onCartBurger'))
+
+    console.log(onCartBurger);
+    if( onCartBurger ) {
       console.log('received local storage ingredients');
-      return dispatch({ type: actionTypes.SET_INGREDIENTS, ingredients: forceIngredients })
+      return dispatch({ type: actionTypes.SET_INGREDIENTS, ingredients: onCartBurger })
     }
 
     console.log('server ingredients');

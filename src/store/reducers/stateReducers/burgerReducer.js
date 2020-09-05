@@ -42,9 +42,33 @@ const reducer = ( state = initialState, action ) => {
       }
 
     case actionTypes.SET_INGREDIENTS:
+
+      const ingredientsReceived = Object.entries(action.ingredients)
+      let setPrice = 4
+      ingredientsReceived.map( ing => {
+        setPrice = setPrice + INGREDIENT_PRICES[ing[0]] * ing[1]
+      } )
+
       return {
         ...state,
         ingredients: action.ingredients,
+        totalPrice: setPrice,
+        error: false,
+      }
+
+    case actionTypes.CLEAR_INGREDIENTS:
+
+      localStorage.clear()
+      const allIngredients = state.ingredients
+      const ingNames = Object.getOwnPropertyNames(allIngredients)
+      for( let i = 0; i < ingNames.length; i++ ) {
+        allIngredients[ingNames[i]] = 0
+      }
+
+      return {
+        ...state,
+        ingredients: allIngredients,
+        totalPrice: 4,
         error: false,
       }
 
