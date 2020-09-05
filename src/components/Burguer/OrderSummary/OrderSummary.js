@@ -15,6 +15,13 @@ const OrderSummary = ({ cancelOrder }) => {
       return <li style={{ textTransform: 'capitalize' }} key={ index } >{ igKey }: { ing[igKey] }</li>
     })
 
+  const goToCheckout = () => {
+    console.log(ing);
+    localStorage.setItem( 'onCartBurger', JSON.stringify(ing) )
+    console.log(localStorage);
+    navigate('/checkout')
+  }
+
   return (
     <>
       <h3>Your Order</h3>
@@ -25,7 +32,7 @@ const OrderSummary = ({ cancelOrder }) => {
       <p>Total price: <b>{ totalPrice.toFixed(2) }</b></p>
       <p>Proceed to checkout?</p>
       <Button buttonType='Danger' clicked={ () => cancelOrder() } >No</Button>
-      <Button buttonType='Success' clicked={ () => navigate('/checkout') } >Yes</Button>
+      <Button buttonType='Success' clicked={ () => goToCheckout() } >Yes</Button>
     </>
   )
 }

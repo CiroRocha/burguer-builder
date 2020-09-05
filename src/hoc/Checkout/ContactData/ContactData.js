@@ -1,8 +1,8 @@
 import React, { useState, useEffect } from 'react'
-import { navigate } from '@reach/router'
 import axios from '../../../components/axios-orders'
 
-import { useSelector } from 'react-redux'
+import { useSelector, useDispatch } from 'react-redux'
+import * as orderActions from '../../../store/actions/asyncActions/orderActions'
 
 import styles from './contactData.module.css'
 
@@ -10,14 +10,17 @@ import Button from '../../../components/UI/Button/Button'
 import Input from '../../../components/UI/Input/Input'
 import Spinner from '../../../components/UI/Spinner/Spinner'
 
+import useErrorHandler from '../../useErrorHandler/useErrorHandler'
+
 const ContactData = () => {
+
+  const dispatch = useDispatch()
 
   const [ displayForm, setDisplayForm ] = useState(null)
 
-  const [ loading, setLoading ] = useState(false)
-
   const ing = useSelector( state => state.burger.ingredients )
   const totalPrice = useSelector( state => state.burger.totalPrice )
+  const loading = useSelector( state => state.order.purchasingBurger )
 
   const [ fieldsData, setFieldsData ] = useState({
     name: {
@@ -124,7 +127,7 @@ const ContactData = () => {
 
   const orderHandler = (event) => {
     event.preventDefault()
-    setLoading(true)
+    // dispatch({ type: actionTypes.PURCHASE_BURGER_START })
 
     const formValues = {}
     for ( let elIdentifier in fieldsData ) {
@@ -139,22 +142,30 @@ const ContactData = () => {
 
     for( let i = 0; i < fieldValues.length; i++) {
       if( fieldValues[i] === null ) {
-        setLoading(false)
+        // setLoading(false)
         return
       }
     }
 
-    axios.post('/orders-placed.json', {
+    const orderData = {
       ingredients: ing,
       price: totalPrice, // this would not happen in production, price should ALWAYS be calculated away from user side code
       costumerData: formValues
-    }).then(response => {
-        setLoading(false)
-        navigate('/')
-      })
-      .catch(error => {
-        setLoading(false)
-      })
+    }
+
+    dispatch( orderActions.purchaseBurguer( orderData ) )
+
+    // axios.post('/orders-placed.json', {
+    //   ingredients: ing,
+    //   price: totalPrice, // this would not happen in production, price should ALWAYS be calculated away from user side code
+    //   costumerData: formValues
+    // }).then(response => {
+    //     setLoading(false)
+    //     navigate('/')
+    //   })
+    //   .catch(error => {
+    //     setLoading(false)
+    //   })
   }
 
   useEffect(() => {
@@ -195,4 +206,4 @@ const ContactData = () => {
   )
 }
 
-export default ContactData
+export default useErrorHandler(ContactData, axios)

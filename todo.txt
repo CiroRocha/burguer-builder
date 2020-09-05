@@ -1,0 +1,3 @@
+Atualizar preço no cache (jogar ele junto do hamburguer)
+zerar cache ao pedir
+priorizar cache mesmo com servidor disponivel
