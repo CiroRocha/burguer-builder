@@ -46,7 +46,7 @@ const reducer = ( state = initialState, action ) => {
       const ingredientsReceived = Object.entries(action.ingredients)
       let setPrice = 4
       ingredientsReceived.map( ing => {
-        setPrice = setPrice + INGREDIENT_PRICES[ing[0]] * ing[1]
+        return setPrice = setPrice + INGREDIENT_PRICES[ing[0]] * ing[1]
       } )
 
       return {

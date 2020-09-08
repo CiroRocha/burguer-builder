@@ -1,5 +1,5 @@
 import * as actionTypes from '../../actions/actionTypes'
-
+import { navigate } from '@reach/router'
 
 const initialState = {
   orders: [],
@@ -20,6 +20,10 @@ const reducer = (state = initialState, action ) => {
         ...action.orderData,
         id: action.orderId,
       }
+
+      localStorage.clear()
+      navigate('/')
+
       return {
         ...state,
         purchasingBurger: false,
