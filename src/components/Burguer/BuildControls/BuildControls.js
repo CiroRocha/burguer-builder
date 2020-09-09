@@ -1,9 +1,9 @@
 import React from 'react'
 
-import { useDispatch } from 'react-redux'
-import * as reduxActions from '../../../store/actions'
+import { useDispatch, useSelector } from 'react-redux'
+import * as actionTypes from '../../../store/actions/actionTypes'
 
-import styles from './BuildControls.module.css'
+import styles from './buildControls.module.css'
 
 import BuildControl from './BuildControl/BuildControl'
 
@@ -11,12 +11,11 @@ const BuildControls = ({ price, purchasable, disabled, reviewOrder }) => {
 
   const dispatch = useDispatch()
 
-  const controls = [
-    { label: 'Salad', type: 'salad' },
-    { label: 'Bacon', type: 'bacon' },
-    { label: 'Cheese', type: 'cheese' },
-    { label: 'Meat', type: 'meat' },
-  ]
+  const ing = useSelector( state => state.burger.ingredients )
+
+  const controls = Object.keys(ing).map(ingredientName => {
+    return { label: ingredientName, type: ingredientName }
+  })
 
   return (
     <div className={ styles.BuildControls } >
@@ -25,8 +24,8 @@ const BuildControls = ({ price, purchasable, disabled, reviewOrder }) => {
         return <BuildControl
                   labelText={ control.label }
                   key={ control.label }
-                  added={ () => dispatch({ type: reduxActions.ADD_INGREDIENT, ingredientName: control.type }) }
-                  removed={ () => dispatch({ type: reduxActions.REMOVE_INGREDIENT, ingredientName: control.type }) }
+                  added={ () => dispatch({ type: actionTypes.ADD_INGREDIENT, ingredientName: control.type }) }
+                  removed={ () => dispatch({ type: actionTypes.REMOVE_INGREDIENT, ingredientName: control.type }) }
                   disabledButton={ disabled[control.type] }
                 />
       })}
@@ -34,6 +33,7 @@ const BuildControls = ({ price, purchasable, disabled, reviewOrder }) => {
         className={ styles.OrderButton } disabled={ !purchasable }
         onClick={ () => reviewOrder() }
       >Order now</button>
+      <button onClick={ () => dispatch({ type: actionTypes.CLEAR_INGREDIENTS }) } style={{ marginTop: '1rem', marginBottom: '3rem', backgroundColor: 'transparent', border: '0' }} >Clear basket</button>
     </div>
   )
 }
