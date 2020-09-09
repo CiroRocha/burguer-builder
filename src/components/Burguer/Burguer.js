@@ -1,7 +1,5 @@
 import React, { useEffect } from 'react'
 
-import { useLocation } from '@reach/router'
-
 import { useSelector, useDispatch } from 'react-redux'
 import * as burgerActions from '../../store/actions/asyncActions/burgerActions'
 
@@ -14,7 +12,6 @@ const Burguer = () => {
   const ing = useSelector( state => state.burger.ingredients )
 
   const dispatch = useDispatch()
-  const location = useLocation()
 
   useEffect(() => {
     dispatch( burgerActions.initIngredients() )

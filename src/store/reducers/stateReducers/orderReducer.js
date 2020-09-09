@@ -4,11 +4,13 @@ import { navigate } from '@reach/router'
 const initialState = {
   orders: [],
   purchasingBurger: false,
+  loadingOrders: false,
 }
 
 const reducer = (state = initialState, action ) => {
   switch ( action.type ) {
 
+    // Burger purchaser handlers
     case actionTypes.PURCHASE_BURGER_START:
       return {
         ...state,
@@ -34,6 +36,26 @@ const reducer = (state = initialState, action ) => {
       return {
         ...state,
         purchasingBurger: false,
+      }
+
+    // Fetch orders handlers
+    case actionTypes.FETCH_ORDERS_START:
+      return {
+        ...state,
+        loadingOrders: true,
+      }
+
+    case actionTypes.FETCH_ORDERS_SUCCESS:
+      return {
+        ...state,
+        orders: action.orders,
+        loadingOrders: false,
+      }
+
+    case actionTypes.FETCH_ORDERS_FAILURE:
+      return {
+        ...state,
+        loadingOrders: false,
       }
 
     default:

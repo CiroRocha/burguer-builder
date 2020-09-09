@@ -14,3 +14,46 @@ export const purchaseBurguer = ( orderData ) => {
       })
   }
 }
+
+export const fetchOrders = () => {
+  return dispatch => {
+    dispatch( fetchOrdersStart() )
+    axios.get('/orders-placed.json')
+      .then(response => {
+        const allOrders = []
+        for ( let key in response.data ) {
+          const currentData = response.data[key]
+          allOrders.push({
+            ...currentData,
+            id: key,
+          })
+        }
+        return (
+          dispatch( fetchOrdersSuccess(allOrders) )
+        )
+      })
+      .catch(err => {
+        return (
+          dispatch( fetchOrdersFailure(err) )
+        )
+      })
+  }
+}
+
+export const fetchOrdersStart = () => {
+  return dispatch => {
+    dispatch({ type: actionTypes.FETCH_ORDERS_START })
+  }
+}
+
+export const fetchOrdersSuccess = ( orders ) => {
+  return dispatch => {
+    dispatch({ type: actionTypes.FETCH_ORDERS_SUCCESS, orders: orders })
+  }
+}
+
+export const fetchOrdersFailure = ( error ) => {
+  return dispatch => {
+    dispatch({ type: actionTypes.FETCH_ORDERS_FAILURE, error: error })
+  }
+}

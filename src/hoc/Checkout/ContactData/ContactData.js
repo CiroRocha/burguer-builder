@@ -3,7 +3,6 @@ import axios from '../../../components/axios-orders'
 
 import { useSelector, useDispatch } from 'react-redux'
 import * as orderActions from '../../../store/actions/asyncActions/orderActions'
-import { navigate } from '@reach/router'
 
 import styles from './contactData.module.css'
 
@@ -128,7 +127,6 @@ const ContactData = () => {
 
   const orderHandler = (event) => {
     event.preventDefault()
-    // dispatch({ type: actionTypes.PURCHASE_BURGER_START })
 
     const formValues = {}
     for ( let elIdentifier in fieldsData ) {
@@ -139,15 +137,6 @@ const ContactData = () => {
       }
     }
 
-    const fieldValues = Object.values(formValues)
-
-    for( let i = 0; i < fieldValues.length; i++) {
-      if( fieldValues[i] === null ) {
-        // setLoading(false)
-        return
-      }
-    }
-
     const orderData = {
       ingredients: ing,
       price: totalPrice, // this would not happen in production, price should ALWAYS be calculated away from user side code
@@ -155,18 +144,6 @@ const ContactData = () => {
     }
 
     dispatch( orderActions.purchaseBurguer( orderData ) )
-
-    // axios.post('/orders-placed.json', {
-    //   ingredients: ing,
-    //   price: totalPrice, // this would not happen in production, price should ALWAYS be calculated away from user side code
-    //   costumerData: formValues
-    // }).then(response => {
-    //     setLoading(false)
-    //     navigate('/')
-    //   })
-    //   .catch(error => {
-    //     setLoading(false)
-    //   })
   }
 
   useEffect(() => {
@@ -197,7 +174,7 @@ const ContactData = () => {
         </form>
       )
     }
-  }, [loading])
+  }, [ loading, fieldsData ])
 
   return (
     <div className={ styles.ContactData } >
