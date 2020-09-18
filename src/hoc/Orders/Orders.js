@@ -13,11 +13,12 @@ const Orders = () => {
 
   const orders = useSelector( state => state.order.orders )
   const loading = useSelector( state => state.order.loadingOrders )
+  const token = useSelector( state => state.auth.token )
 
   const dispatch = useDispatch()
 
   useEffect (() => {
-    dispatch( orderActions.fetchOrders() )
+    dispatch( orderActions.fetchOrders( token ) )
   }, [])
 
   return (

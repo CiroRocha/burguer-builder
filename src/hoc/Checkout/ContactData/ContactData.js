@@ -21,6 +21,7 @@ const ContactData = () => {
   const ing = useSelector( state => state.burger.ingredients )
   const totalPrice = useSelector( state => state.burger.totalPrice )
   const loading = useSelector( state => state.order.purchasingBurger )
+  const token = useSelector( state => state.auth.token )
 
   const [ fieldsData, setFieldsData ] = useState({
     name: {
@@ -143,7 +144,7 @@ const ContactData = () => {
       costumerData: formValues
     }
 
-    dispatch( orderActions.purchaseBurguer( orderData ) )
+    dispatch( orderActions.purchaseBurger( orderData, token ) )
   }
 
   useEffect(() => {
@@ -174,7 +175,7 @@ const ContactData = () => {
         </form>
       )
     }
-  }, [ loading, fieldsData ])
+  }, [ loading, fieldsData, ing ])
 
   return (
     <div className={ styles.ContactData } >
