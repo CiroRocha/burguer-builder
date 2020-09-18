@@ -1,5 +1,7 @@
 import React, { useState, useEffect } from 'react'
 
+import { navigate } from '@reach/router'
+
 import { useSelector } from 'react-redux'
 
 import axios from '../../components/axios-orders'
@@ -17,12 +19,9 @@ const BurguerContainer = () => {
   const ing = useSelector( state => state.burger.ingredients )
   const totalPrice = useSelector( state => state.burger.totalPrice )
   const errFetchIngredients = useSelector( state => state.burger.error )
+  const authToken = useSelector( state => state.auth.token )
 
   const [ reviewOrder, setReviewOrder ] = useState(false)
-
-  // BuildControls order button disable/enable
-  // Managed here and passed as prop so that Redux isn't necessary at BuildControls component
-  const [ purchasable, setPurchasable ] = useState(false)
 
   // Checks if burger is purchasable based on the amount of ingredients picked
   useEffect (() => {
@@ -34,11 +33,19 @@ const BurguerContainer = () => {
         .reduce((sum, el) => {
           return sum + el
         }, 0)
-
-      setPurchasable(sum > 0)
     }
   }, [ ing ])
 
+
+  const handleReviewOrder = () => {
+    if ( authToken ) {
+      setReviewOrder(true)
+    } else {
+      localStorage.setItem( 'onCartBurger', JSON.stringify(ing) )
+      localStorage.setItem( 'onCartBurgerPrice', totalPrice.toFixed(2) )
+      navigate('/login')
+    }
+  }
 
   // Checks if there is more than 1 of each ingredient
   // The ones who don't get a disabled remove ingredient button
@@ -57,9 +64,9 @@ const BurguerContainer = () => {
       <>
         <BuildControls
           price={ totalPrice }
-          purchasable={ purchasable }
           disabled={ disabledInfo }
-          reviewOrder={ () => setReviewOrder(true) }
+          reviewOrder={ () => handleReviewOrder() }
+          btnText = { authToken ? 'Order now' : 'Sign in to order' }
         />
       </>
     )

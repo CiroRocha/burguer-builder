@@ -1,5 +1,7 @@
 import React, { useState, useEffect } from 'react'
 
+import { navigate } from '@reach/router'
+
 import { useSelector, useDispatch } from 'react-redux'
 import * as authActions from '../../store/actions/asyncActions/authActions'
 
@@ -18,6 +20,7 @@ const Auth = () => {
 
   const loading = useSelector( state => state.auth.loading )
   const error = useSelector( state => state.auth.error )
+  const authToken = useSelector( state => state.auth.token )
 
   const authHandler = ( event ) => {
     event.preventDefault()
@@ -89,6 +92,10 @@ const Auth = () => {
     )
     }
   }, [ loading, fieldsData ])
+
+  if ( authToken ) {
+    navigate('/')
+  }
 
   return (
     <div className={ styles.Auth } >

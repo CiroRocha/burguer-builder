@@ -24,7 +24,6 @@ export const authFailure = ( error ) => {
 }
 
 export const auth = ( email, password, signIn ) => {
-  console.log(email, password);
   return dispatch => {
 
     let url = 'https://identitytoolkit.googleapis.com/v1/accounts:signUp?key=AIzaSyBb4JtLDKy_scX2TOgV355dMYiVlcuIiBM'
@@ -39,12 +38,10 @@ export const auth = ( email, password, signIn ) => {
       password: password,
       returnSecureToken: true,
     }).then( res => {
-      console.log(res)
       dispatch(authSuccess(res.data.idToken, res.data.localId))
       dispatch(checkAuthTimeout(res.data.expiresIn))
     })
     .catch( err => {
-      console.log(err)
       dispatch(authFailure(err.response.data.error))
     })
   }
