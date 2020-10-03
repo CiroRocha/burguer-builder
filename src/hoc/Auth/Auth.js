@@ -21,6 +21,7 @@ const Auth = () => {
   const loading = useSelector( state => state.auth.loading )
   const error = useSelector( state => state.auth.error )
   const authToken = useSelector( state => state.auth.token )
+  const redirectPath = useSelector( state => state.auth.authRedirectRoute )
 
   const authHandler = ( event ) => {
     event.preventDefault()
@@ -93,9 +94,12 @@ const Auth = () => {
     }
   }, [ loading, fieldsData ])
 
-  if ( authToken ) {
-    navigate('/')
-  }
+  useEffect(() => {
+    if ( authToken ) {
+      navigate( redirectPath )
+      dispatch( authActions.setRedirectPath('/') )
+    }
+  }, [ authToken ])
 
   return (
     <div className={ styles.Auth } >

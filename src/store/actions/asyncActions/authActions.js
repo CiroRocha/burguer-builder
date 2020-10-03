@@ -60,3 +60,10 @@ export const checkAuthTimeout = ( expirationTime ) => {
     }, expirationTime * 1000)
   }
 }
+
+export const setRedirectPath = ( authRedirectRoute ) => {
+  return {
+    type: actionTypes.AUTH_SET_REDIRECT,
+    authRedirectRoute: authRedirectRoute,
+  }
+}
