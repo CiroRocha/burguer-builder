@@ -2,6 +2,7 @@ import * as actionTypes from '../../actions/actionTypes'
 
 const initialState = {
   token: null,
+  refreshToken: null,
   userId: null,
   error: null,
   loading: null,
@@ -22,6 +23,7 @@ const reducer = (state = initialState, action) => {
         ...state,
         token: action.idToken,
         userId: action.userId,
+        refreshToken: action.refreshToken,
         error: null,
         loading: false,
       }

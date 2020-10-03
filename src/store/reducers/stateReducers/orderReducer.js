@@ -23,7 +23,8 @@ const reducer = (state = initialState, action ) => {
         id: action.orderId,
       }
 
-      localStorage.clear()
+      localStorage.removeItem('onCartBurger')
+      localStorage.removeItem('onCartBurgerPrice')
       navigate('/')
 
       return {

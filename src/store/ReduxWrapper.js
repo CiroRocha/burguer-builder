@@ -6,17 +6,18 @@ import thunk from 'redux-thunk'
 
 import { globalReducer } from './reducers/globalReducer'
 
-const createStore = () => {
+import * as authActions from './actions/asyncActions/authActions'
+
+const createStore = reduxCreateStore( globalReducer, composeWithDevTools( applyMiddleware( thunk ) ) )
+
+const dispatch = createStore.dispatch
+console.log(dispatch);
+dispatch( authActions.authCheckState() )
+
+export const ReduxWrapper = ({ children }) => {
   return (
-    reduxCreateStore(
-      globalReducer,
-      composeWithDevTools(
-        applyMiddleware( thunk )
-      )
-    )
+    <Provider store={createStore}>
+      { children }
+    </Provider>
   )
 }
-
-export default ({ element }) => (
-  <Provider store={createStore()}>{element}</Provider>
-);
