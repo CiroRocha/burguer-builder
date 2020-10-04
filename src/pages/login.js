@@ -1,14 +1,14 @@
 import React from 'react'
 
+import Auth from '../hoc/Auth/Auth'
 import Layout from '../hoc/Layout/Layout'
-import Orders from '../hoc/Orders/Orders'
 
-const OrdersPage = () => {
+const Login = () => {
   return (
     <Layout>
-      <Orders />
+      <Auth />
     </Layout>
   )
 }
 
-export default OrdersPage
+export default Login

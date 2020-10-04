@@ -1,5 +1,6 @@
 import React, { useEffect } from 'react'
 import axios from '../../components/axios-orders'
+import { navigate } from '@reach/router'
 
 import { useSelector, useDispatch } from 'react-redux'
 import * as orderActions from '../../store/actions/asyncActions/orderActions'
@@ -13,12 +14,17 @@ const Orders = () => {
 
   const orders = useSelector( state => state.order.orders )
   const loading = useSelector( state => state.order.loadingOrders )
+  const token = useSelector( state => state.auth.token )
+  const userId = useSelector( state => state.auth.userId )
 
   const dispatch = useDispatch()
 
   useEffect (() => {
-    dispatch( orderActions.fetchOrders() )
-  }, [])
+    if ( !token ) {
+      navigate('/')
+    }
+    dispatch( orderActions.fetchOrders( token, userId ) )
+  }, [ token ])
 
   return (
     <div>

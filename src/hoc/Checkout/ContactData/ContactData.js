@@ -3,6 +3,7 @@ import axios from '../../../components/axios-orders'
 
 import { useSelector, useDispatch } from 'react-redux'
 import * as orderActions from '../../../store/actions/asyncActions/orderActions'
+import * as authActions from '../../../store/actions/asyncActions/authActions'
 
 import styles from './contactData.module.css'
 
@@ -11,6 +12,7 @@ import Input from '../../../components/UI/Input/Input'
 import Spinner from '../../../components/UI/Spinner/Spinner'
 
 import useErrorHandler from '../../useErrorHandler/useErrorHandler'
+import { navigate } from 'gatsby'
 
 const ContactData = () => {
 
@@ -21,6 +23,8 @@ const ContactData = () => {
   const ing = useSelector( state => state.burger.ingredients )
   const totalPrice = useSelector( state => state.burger.totalPrice )
   const loading = useSelector( state => state.order.purchasingBurger )
+  const token = useSelector( state => state.auth.token )
+  const userId = useSelector( state => state.auth.userId )
 
   const [ fieldsData, setFieldsData ] = useState({
     name: {
@@ -140,16 +144,32 @@ const ContactData = () => {
     const orderData = {
       ingredients: ing,
       price: totalPrice, // this would not happen in production, price should ALWAYS be calculated away from user side code
+      userId: userId,
       costumerData: formValues
     }
 
-    dispatch( orderActions.purchaseBurguer( orderData ) )
+    dispatch( orderActions.purchaseBurger( orderData, token ) )
   }
 
   useEffect(() => {
     if( loading ) {
       setDisplayForm(<Spinner />)
     } else {
+
+      if ( !token ) {
+        setDisplayForm(
+          <>
+            <p>Please log in before ordering</p>
+            <Button buttonType='Success' clicked={ () => {
+                dispatch( authActions.setRedirectPath('/checkout/contact-data') )
+                navigate('/login')
+              }}
+            >Login</Button>
+          </>
+        )
+        return
+      }
+
       const formArray = []
       for ( let key in fieldsData ) {
         formArray.push({
@@ -174,11 +194,11 @@ const ContactData = () => {
         </form>
       )
     }
-  }, [ loading, fieldsData ])
+  }, [ loading, fieldsData, ing ])
 
   return (
     <div className={ styles.ContactData } >
-      <h4>Enter your contact data:</h4>
+      { token ? <h4>Enter your contact data:</h4> : <h4>Sorry, you are not logged in :(</h4> }
       { displayForm }
     </div>
   )

@@ -58,7 +58,8 @@ const reducer = ( state = initialState, action ) => {
 
     case actionTypes.CLEAR_INGREDIENTS:
 
-      localStorage.clear()
+      localStorage.removeItem('onCartBurger')
+      localStorage.removeItem('onCartBurgerPrice')
       const allIngredients = state.ingredients
       const ingNames = Object.getOwnPropertyNames(allIngredients)
       for( let i = 0; i < ingNames.length; i++ ) {

@@ -7,11 +7,12 @@ import styles from './buildControls.module.css'
 
 import BuildControl from './BuildControl/BuildControl'
 
-const BuildControls = ({ price, purchasable, disabled, reviewOrder }) => {
+const BuildControls = ({ price, disabled, reviewOrder, btnText }) => {
 
   const dispatch = useDispatch()
 
   const ing = useSelector( state => state.burger.ingredients )
+  const authToken = useSelector( state => state.auth.token )
 
   const controls = Object.keys(ing).map(ingredientName => {
     return { label: ingredientName, type: ingredientName }
@@ -19,7 +20,7 @@ const BuildControls = ({ price, purchasable, disabled, reviewOrder }) => {
 
   return (
     <div className={ styles.BuildControls } >
-      <p>Burguer price: <b>{ price.toFixed(2) }</b></p>
+      <p>Burger price: <b>{ price.toFixed(2) }</b></p>
       {controls.map(control => {
         return <BuildControl
                   labelText={ control.label }
@@ -30,9 +31,9 @@ const BuildControls = ({ price, purchasable, disabled, reviewOrder }) => {
                 />
       })}
       <button
-        className={ styles.OrderButton } disabled={ !purchasable }
+        className={ styles.OrderButton }
         onClick={ () => reviewOrder() }
-      >Order now</button>
+      >{ btnText }</button>
       <button onClick={ () => dispatch({ type: actionTypes.CLEAR_INGREDIENTS }) } style={{ marginTop: '1rem', marginBottom: '3rem', backgroundColor: 'transparent', border: '0' }} >Clear basket</button>
     </div>
   )
