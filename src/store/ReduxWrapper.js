@@ -11,7 +11,6 @@ import * as authActions from './actions/asyncActions/authActions'
 const createStore = reduxCreateStore( globalReducer, composeWithDevTools( applyMiddleware( thunk ) ) )
 
 const dispatch = createStore.dispatch
-console.log(dispatch);
 dispatch( authActions.authCheckState() )
 
 export const ReduxWrapper = ({ children }) => {

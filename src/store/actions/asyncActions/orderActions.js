@@ -15,10 +15,10 @@ export const purchaseBurger = ( orderData, token ) => {
   }
 }
 
-export const fetchOrders = ( token ) => {
+export const fetchOrders = ( token, userId ) => {
   return dispatch => {
     dispatch( fetchOrdersStart() )
-    axios.get(`/orders-placed.json?auth=${ token }`)
+    axios.get(`/orders-placed.json?auth=${ token }&orderBy="userId"&equalTo="${ userId }"`)
       .then(response => {
         const allOrders = []
         for ( let key in response.data ) {

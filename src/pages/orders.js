@@ -3,7 +3,7 @@ import React from 'react'
 import Layout from '../hoc/Layout/Layout'
 import Orders from '../hoc/Orders/Orders'
 
-const orders = () => {
+const OrdersPage = () => {
   return (
     <Layout>
       <Orders />
@@ -11,4 +11,4 @@ const orders = () => {
   )
 }
 
-export default orders
+export default OrdersPage

@@ -26,7 +26,6 @@ export const authFailure = ( error ) => {
 
 export const auth = ( email, password, signIn ) => {
   return dispatch => {
-    console.log('dispatch: ', dispatch);
 
     let url = 'https://identitytoolkit.googleapis.com/v1/accounts:signUp?key=AIzaSyBb4JtLDKy_scX2TOgV355dMYiVlcuIiBM'
 
@@ -45,7 +44,6 @@ export const auth = ( email, password, signIn ) => {
       localStorage.setItem('expirationDate', expirationDate)
       localStorage.setItem('refreshToken', res.data.refreshToken)
 
-      console.log(res.data);
       dispatch(authSuccess(res.data.idToken, res.data.localId, res.data.refreshToken))
       dispatch(checkAuthTimeout(res.data.expiresIn, res.data.refreshToken))
     })
@@ -91,12 +89,10 @@ export const refreshToken = ( refreshToken ) => {
       localStorage.setItem('expirationDate', expirationDate)
       localStorage.setItem('refreshToken', res.data.refresh_token)
 
-      console.log('refresh', res.data);
       dispatch(authSuccess(res.data.id_token, res.data.user_id, res.data.refresh_token))
       dispatch(checkAuthTimeout(res.data.expires_in, res.data.refresh_token))
     })
     .catch( err => {
-      console.log('refresh', err);
       dispatch(authFailure(err.response.data.error))
     })
   }
@@ -104,17 +100,19 @@ export const refreshToken = ( refreshToken ) => {
 
 export const authCheckState = () => {
   return dispatch => {
-    const authToken = localStorage.getItem('authToken')
+    if ( typeof window !== 'undefined' ) {
+      const authToken = localStorage.getItem('authToken')
 
-    if ( !authToken ) {
-      dispatch( logout() )
-    } else {
-      const expirationDate = new Date( localStorage.getItem('expirationDate') )
-
-      if ( expirationDate < new Date() ) {
+      if ( !authToken ) {
         dispatch( logout() )
       } else {
-        dispatch( refreshToken( localStorage.getItem( 'refreshToken' ) ) )
+        const expirationDate = new Date( localStorage.getItem('expirationDate') )
+
+        if ( expirationDate < new Date() ) {
+          dispatch( logout() )
+        } else {
+          dispatch( refreshToken( localStorage.getItem( 'refreshToken' ) ) )
+        }
       }
     }
   }

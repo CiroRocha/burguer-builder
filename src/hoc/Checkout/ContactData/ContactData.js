@@ -24,6 +24,7 @@ const ContactData = () => {
   const totalPrice = useSelector( state => state.burger.totalPrice )
   const loading = useSelector( state => state.order.purchasingBurger )
   const token = useSelector( state => state.auth.token )
+  const userId = useSelector( state => state.auth.userId )
 
   const [ fieldsData, setFieldsData ] = useState({
     name: {
@@ -143,6 +144,7 @@ const ContactData = () => {
     const orderData = {
       ingredients: ing,
       price: totalPrice, // this would not happen in production, price should ALWAYS be calculated away from user side code
+      userId: userId,
       costumerData: formValues
     }
 
