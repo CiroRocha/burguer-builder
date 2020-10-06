@@ -26,6 +26,7 @@ const ContactData = () => {
   const token = useSelector( state => state.auth.token )
   const userId = useSelector( state => state.auth.userId )
 
+  // eslint-disable-next-line no-unused-vars
   const [ fieldsData, setFieldsData ] = useState({
     name: {
       elementType: 'input',
@@ -194,7 +195,9 @@ const ContactData = () => {
         </form>
       )
     }
-  }, [ loading, fieldsData, ing ])
+
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [ loading, fieldsData, ing, token ])
 
   return (
     <div className={ styles.ContactData } >

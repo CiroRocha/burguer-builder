@@ -24,7 +24,8 @@ const Orders = () => {
       navigate('/')
     }
     dispatch( orderActions.fetchOrders( token, userId ) )
-  }, [ token ])
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [ token, userId ])
 
   return (
     <div>

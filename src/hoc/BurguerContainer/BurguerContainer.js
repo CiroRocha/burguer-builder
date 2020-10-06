@@ -23,16 +23,20 @@ const BurguerContainer = () => {
 
   const [ reviewOrder, setReviewOrder ] = useState(false)
 
+  const [ sum, setSum ] = useState(0)
+
   // Checks if burger is purchasable based on the amount of ingredients picked
   useEffect (() => {
     if( ing ) {
-      const sum = Object.keys( ing )
-        .map(igKey => {
-          return ing[ igKey ]
-        })
-        .reduce((sum, el) => {
-          return sum + el
-        }, 0)
+      setSum (
+        Object.keys( ing )
+          .map(igKey => {
+            return ing[ igKey ]
+          })
+          .reduce((sum, el) => {
+            return sum + el
+          }, 0)
+        )
     }
   }, [ ing ])
 
@@ -67,6 +71,7 @@ const BurguerContainer = () => {
           disabled={ disabledInfo }
           reviewOrder={ () => handleReviewOrder() }
           btnText = { authToken ? 'Order now' : 'Sign in to order' }
+          purchasableBurger = { sum <= 0 } // if no ingredient is added to the burger, disabled = true
         />
       </>
     )

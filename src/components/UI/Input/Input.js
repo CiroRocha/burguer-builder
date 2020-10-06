@@ -3,6 +3,7 @@ import React, { useState, useEffect } from 'react'
 import styles from './input.module.css'
 
 const Input = ({ label, elementType, elementName, elementConfig, value, validationRules }) => {
+  /* eslint jsx-a11y/no-onchange: 0 */
 
   const [ data, setData ] = useState(value)
 
@@ -17,7 +18,7 @@ const Input = ({ label, elementType, elementName, elementConfig, value, validati
     } else {
       return setValid(false)
     }
-  }, [ data ])
+  }, [ data, usedAtLeastOnce, validationRules ])
 
   switch ( elementType ) {
     case 'input':
@@ -43,7 +44,7 @@ const Input = ({ label, elementType, elementName, elementConfig, value, validati
 
   return (
     <div className={ styles.Input } >
-      <label  className={ styles.Label, valid ? null : ` ${styles.Invalid}` } >
+      <label  className={ styles.Label + valid ? null : ` ${styles.Invalid}` } >
         { label }
         { inputEl }
         { valid ? null : <span>This is invalid!</span> }

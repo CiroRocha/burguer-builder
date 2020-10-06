@@ -16,7 +16,7 @@ const Order = ({ ingredients, price }) => {
     }
 
     setAllIngredients(arrayOfIngredients)
-  }, [])
+  }, [ ingredients ])
 
   return (
     <div className={ styles.Order } >

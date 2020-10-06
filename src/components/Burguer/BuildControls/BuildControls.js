@@ -7,12 +7,11 @@ import styles from './buildControls.module.css'
 
 import BuildControl from './BuildControl/BuildControl'
 
-const BuildControls = ({ price, disabled, reviewOrder, btnText }) => {
+const BuildControls = ({ price, disabled, reviewOrder, btnText, purchasableBurger }) => {
 
   const dispatch = useDispatch()
 
   const ing = useSelector( state => state.burger.ingredients )
-  const authToken = useSelector( state => state.auth.token )
 
   const controls = Object.keys(ing).map(ingredientName => {
     return { label: ingredientName, type: ingredientName }
@@ -31,6 +30,7 @@ const BuildControls = ({ price, disabled, reviewOrder, btnText }) => {
                 />
       })}
       <button
+        disabled={ purchasableBurger }
         className={ styles.OrderButton }
         onClick={ () => reviewOrder() }
       >{ btnText }</button>

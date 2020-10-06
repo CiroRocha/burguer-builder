@@ -28,6 +28,7 @@ const Auth = () => {
     dispatch( authActions.auth(event.target[0].value, event.target[1].value, signIn) )
   }
 
+  // eslint-disable-next-line no-unused-vars
   const [ fieldsData, setFieldsData ] = useState({
     email: {
       elementType: 'input',
@@ -99,6 +100,8 @@ const Auth = () => {
       navigate( redirectPath )
       dispatch( authActions.setRedirectPath('/') )
     }
+
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [ authToken ])
 
   return (

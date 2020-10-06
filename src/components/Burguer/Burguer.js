@@ -7,7 +7,7 @@ import styles from './burguer.module.css'
 
 import BurguerIngredient from './BurguerIngredient/BurguerIngredient'
 
-const Burguer = () => {
+const Burger = () => {
 
   const ing = useSelector( state => state.burger.ingredients )
 
@@ -15,6 +15,7 @@ const Burguer = () => {
 
   useEffect(() => {
     dispatch( burgerActions.initIngredients() )
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
 
   let mountedIngredients = []
@@ -46,4 +47,4 @@ const Burguer = () => {
   )
 }
 
-export default Burguer
+export default Burger
